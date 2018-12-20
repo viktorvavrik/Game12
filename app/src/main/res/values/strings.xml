@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Game1</string>
+    <string name="todo">TODO</string>
+    <string name="buttonStart">Go!</string>
+    <string name="hint1">Enter your name</string>
+    <string name="welcome"></string>
+    <string name="buttonName">Enter</string>
+
+    <string name="difficulty">Difficulty:</string>
+    <string name="beginner">Beginner</string>
+    <string name="advanced">Advanced</string>
+    <string name="expert">Expert</string>
+
+    <string name="start">S T A R T</string>
+</resources>
