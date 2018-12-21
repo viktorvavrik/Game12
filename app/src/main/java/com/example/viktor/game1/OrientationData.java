@@ -56,7 +56,7 @@ public class OrientationData implements SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
         if(event.sensor.getType() == Sensor.TYPE_GRAVITY) {
             gravOutput = event.values;
-            System.out.println("gravity"+ gravOutput[0] + " " + gravOutput[1] + " " + gravOutput[2]);
+            //System.out.println("gravity"+ gravOutput[0] + " " + gravOutput[1] + " " + gravOutput[2]);
             orientation[0] = gravOutput[0];
             orientation[1] = gravOutput[1];
             orientation[2] = gravOutput[2];

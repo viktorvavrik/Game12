@@ -20,6 +20,7 @@ public class PlayGame2Activity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         String name = extras.getString("name");
         int difficulty = extras.getInt("difficulty");
+        System.out.println("activity2 end");
 
 
     }

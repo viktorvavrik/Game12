@@ -25,6 +25,7 @@ public class Ball1 {
         yVelocity = rand.nextInt(10) - 5;
 
 
+
     }
 
     public void draw(Canvas canvas) {
@@ -52,5 +53,13 @@ public class Ball1 {
     public void setVelocity(float v, float v1) {
         xVelocity += v*100;
         yVelocity += v1*100;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }

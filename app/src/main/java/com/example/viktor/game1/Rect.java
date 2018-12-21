@@ -3,7 +3,6 @@ package com.example.viktor.game1;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-
 import java.util.Random;
 
 public class Rect {
@@ -13,10 +12,11 @@ public class Rect {
     private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
     Random rand = new Random();
 
+
     public Rect(Bitmap bmp) {
         image = bmp;
-        x = rand.nextInt(100)+10;
-        y = rand.nextInt(100)+10;
+        x = rand.nextInt(screenWidth-100)+50;
+        y = rand.nextInt(screenHeight-100)+50;
 
 
     }
@@ -25,7 +25,22 @@ public class Rect {
         canvas.drawBitmap(image, x,y, null);
     }
 
-    public void update(float[] orientation) {
+    public void update() {
+        x=x;
+        y=y;
 
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void newUpdate() {
+        x = rand.nextInt(screenWidth-100)+50;
+        y = rand.nextInt(screenHeight-100)+50;
     }
 }

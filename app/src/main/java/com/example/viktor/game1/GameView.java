@@ -18,10 +18,14 @@ class GameView extends SurfaceView  implements SurfaceHolder.Callback {
     private MainThread thread;
 
     Ball1 ball1;
-    ArrayList<Rect> badRectanglesList;
+    ArrayList<Rect> badRectanglesList = new ArrayList<>();
     Rect rect;
-    Time startTime, newBadRectTime;
+    //Time startTime;
     private OrientationData orientationData;
+    Drawable d = getResources().getDrawable(R.drawable.ball_shape);
+    Drawable f = getResources().getDrawable(R.drawable.rect_shape);
+    Drawable g = getResources().getDrawable(R.drawable.rect2_shape);
+    int points = 0;
 
 
 
@@ -40,11 +44,9 @@ class GameView extends SurfaceView  implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        Drawable d = getResources().getDrawable(R.drawable.ball_shape);
-        Drawable e = getResources().getDrawable(R.drawable.rect_shape);
+
         ball1 = new Ball1(drawableToBitmap(d));
-        startTime = new Time(0);
-        newBadRectTime = new Time(0);
+        rect = new Rect(drawableToBitmap(f));
         orientationData.newGame();
 
 
@@ -62,8 +64,16 @@ class GameView extends SurfaceView  implements SurfaceHolder.Callback {
         boolean retry = true;
         while(retry) {
             try {
+                //System.out.println("ukoncujem vlakno");
                 thread.setRunning(false);
                 thread.join();
+                try {
+                    return;
+                } catch(Exception s) {
+                    s.printStackTrace();
+                    System.out.println(s);
+                }
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -73,14 +83,56 @@ class GameView extends SurfaceView  implements SurfaceHolder.Callback {
 
     public void update() {
 
+
         ball1.update(orientationData.getOrientation());
-        if(time > 10000) badRectanglesList.add(new Rect());
+        int ballX = ball1.getX();
+        int ballY = ball1.getY();
+        int rectX = rect.getX();
+        int rectY = rect.getY();
+        //System.out.println("balX = " + ballX+" balY = " + ballY + " rectX = " + rectX + " rectY = " + rectY);
+        for(Rect badRect : badRectanglesList) {
+            if((ballX<badRect.getX()+5) && (ballX+110>badRect.getX())) {
+                if((ballY<badRect.getY()+5) && ballY+110>badRect.getY()) {
+                    endGame();
+                }
+            }
+        }
+
+        if((ballX<rectX+5) && (ballX+110>rectX))  {
+            if((ballY<rectY+5) && (ballY+110>rectY)) {
+                rect.newUpdate();
+                points++;
+                System.out.println("Pocet bodov = " + points);
+                //if(points%2==0) {
+                    //System.out.println("New bad rectangle");
+                    badRectanglesList.add(new Rect(drawableToBitmap(g)));
+                    System.out.println(badRectanglesList.size());
+                    for(Rect badRectangle : badRectanglesList) {
+                        System.out.println("coordinate of rec: " + badRectangle.getX() + " " + badRectangle.getY());
+                        badRectangle.update();
+                    }
+                //}
+            }
+        }
+
+
+
+    }
+
+    private void endGame() {
+        System.out.println("KONIEC HRY");
+        surfaceDestroyed(getHolder());
     }
 
     public void draw(Canvas canvas) {
         super.draw(canvas);
         if(canvas!=null) {
+            rect.draw(canvas);
             ball1.draw(canvas);
+            for(Rect badRectangle : badRectanglesList) {
+                badRectangle.draw(canvas);
+            }
+
         }
     }
 
