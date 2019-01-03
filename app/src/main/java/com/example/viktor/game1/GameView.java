@@ -1,5 +1,6 @@
 package com.example.viktor.game1;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -8,19 +9,16 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
-import java.sql.Time;
 import java.util.ArrayList;
 
 
 class GameView extends SurfaceView  implements SurfaceHolder.Callback {
 
     private MainThread thread;
-
+    Activity activity;
     Ball1 ball1;
     ArrayList<Rect> badRectanglesList = new ArrayList<>();
     Rect rect;
-    //Time startTime;
     private OrientationData orientationData;
     Drawable d = getResources().getDrawable(R.drawable.ball_shape);
     Drawable f = getResources().getDrawable(R.drawable.rect_shape);
@@ -39,12 +37,12 @@ class GameView extends SurfaceView  implements SurfaceHolder.Callback {
 
         thread = new MainThread(getHolder(), this);
         setFocusable(true);
-
-    }
+     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
 
+        //activity = (Activity) holder;
         ball1 = new Ball1(drawableToBitmap(d));
         rect = new Rect(drawableToBitmap(f));
         orientationData.newGame();
@@ -52,6 +50,7 @@ class GameView extends SurfaceView  implements SurfaceHolder.Callback {
 
         thread.setRunning(true);
         thread.start();
+
     }
 
     @Override
@@ -64,19 +63,23 @@ class GameView extends SurfaceView  implements SurfaceHolder.Callback {
         boolean retry = true;
         while(retry) {
             try {
-                //System.out.println("ukoncujem vlakno");
+                System.out.println("ukoncujem vlakno");
+
                 thread.setRunning(false);
                 thread.join();
+
                 try {
                     return;
+
                 } catch(Exception s) {
-                    s.printStackTrace();
-                    System.out.println(s);
+                    System.out.println("Exception s: " + s);
+
                 }
 
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.out.println("Exception e:" + e);
             }
+            System.out.println("retry false");
             retry = false;
         }
     }
@@ -89,11 +92,12 @@ class GameView extends SurfaceView  implements SurfaceHolder.Callback {
         int ballY = ball1.getY();
         int rectX = rect.getX();
         int rectY = rect.getY();
-        //System.out.println("balX = " + ballX+" balY = " + ballY + " rectX = " + rectX + " rectY = " + rectY);
+
         for(Rect badRect : badRectanglesList) {
             if((ballX<badRect.getX()+5) && (ballX+110>badRect.getX())) {
                 if((ballY<badRect.getY()+5) && ballY+110>badRect.getY()) {
                     endGame();
+                    //end
                 }
             }
         }
@@ -103,8 +107,7 @@ class GameView extends SurfaceView  implements SurfaceHolder.Callback {
                 rect.newUpdate();
                 points++;
                 System.out.println("Pocet bodov = " + points);
-                //if(points%2==0) {
-                    //System.out.println("New bad rectangle");
+
                     badRectanglesList.add(new Rect(drawableToBitmap(g)));
                     System.out.println(badRectanglesList.size());
                     for(Rect badRectangle : badRectanglesList) {
@@ -122,6 +125,7 @@ class GameView extends SurfaceView  implements SurfaceHolder.Callback {
     private void endGame() {
         System.out.println("KONIEC HRY");
         surfaceDestroyed(getHolder());
+        //end
     }
 
     public void draw(Canvas canvas) {
