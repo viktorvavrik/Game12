@@ -6,10 +6,11 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import java.util.ArrayList;
+
+
 
 
 class GameView extends SurfaceView  implements SurfaceHolder.Callback {
@@ -29,6 +30,8 @@ class GameView extends SurfaceView  implements SurfaceHolder.Callback {
 
     public GameView(Context context) {
         super(context);
+
+
 
         getHolder().addCallback(this);
         orientationData = new OrientationData(context);
@@ -63,9 +66,6 @@ class GameView extends SurfaceView  implements SurfaceHolder.Callback {
         boolean retry = true;
         while(retry) {
             try {
-                System.out.println("ukoncujem vlakno");
-
-                thread.setRunning(false);
                 thread.join();
 
                 try {
@@ -96,8 +96,8 @@ class GameView extends SurfaceView  implements SurfaceHolder.Callback {
         for(Rect badRect : badRectanglesList) {
             if((ballX<badRect.getX()+5) && (ballX+110>badRect.getX())) {
                 if((ballY<badRect.getY()+5) && ballY+110>badRect.getY()) {
-                    endGame();
-                    //end
+                    thread.setEndgame(true);
+
                 }
             }
         }
@@ -106,12 +106,12 @@ class GameView extends SurfaceView  implements SurfaceHolder.Callback {
             if((ballY<rectY+5) && (ballY+110>rectY)) {
                 rect.newUpdate();
                 points++;
-                System.out.println("Pocet bodov = " + points);
+                //System.out.println("Pocet bodov = " + points);
 
                     badRectanglesList.add(new Rect(drawableToBitmap(g)));
-                    System.out.println(badRectanglesList.size());
+                    //System.out.println(badRectanglesList.size());
                     for(Rect badRectangle : badRectanglesList) {
-                        System.out.println("coordinate of rec: " + badRectangle.getX() + " " + badRectangle.getY());
+                        //System.out.println("coordinate of rec: " + badRectangle.getX() + " " + badRectangle.getY());
                         badRectangle.update();
                     }
                 //}
@@ -120,12 +120,6 @@ class GameView extends SurfaceView  implements SurfaceHolder.Callback {
 
 
 
-    }
-
-    private void endGame() {
-        System.out.println("KONIEC HRY");
-        surfaceDestroyed(getHolder());
-        //end
     }
 
     public void draw(Canvas canvas) {
@@ -155,4 +149,12 @@ class GameView extends SurfaceView  implements SurfaceHolder.Callback {
     }
 
 
+    public void showScore(Canvas canvas) {
+
+        for(int a = 0; a < 100000; a++) {
+
+        }
+        thread.setRunning(false);
+        surfaceDestroyed(getHolder());
+    }
 }

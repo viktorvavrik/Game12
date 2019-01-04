@@ -32,26 +32,26 @@ public class PlayGame2Activity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        System.out.println("V onResume");
+        //System.out.println("V onResume");
 
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        System.out.println("V onResume");
+        //System.out.println("V onResume");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        System.out.println("V onResume");
+        //System.out.println("V onResume");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        System.out.println("V onResume");
+        //System.out.println("V onResume");
     }
 
 

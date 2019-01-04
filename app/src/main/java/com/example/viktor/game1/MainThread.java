@@ -10,26 +10,31 @@ public class MainThread extends Thread {
     private GameView gameView;
     private boolean running;
     public static Canvas canvas;
+    private boolean endgame;
+
 
     public MainThread(SurfaceHolder surfaceHolder, GameView gameView) {
         super();
         this.surfaceHolder = surfaceHolder;
         this.gameView = gameView;
+        endgame = false;
     }
 
 
 
     public void run() {
         while(running) {
-            System.out.println("run");
             canvas = null;
 
             try {
                 canvas = this.surfaceHolder.lockCanvas();
                 synchronized (surfaceHolder) {
-                    this.gameView.update();
-                    this.gameView.draw(canvas);
-
+                    if(endgame) {
+                        this.gameView.showScore(canvas);
+                    } else {
+                        this.gameView.update();
+                        this.gameView.draw(canvas);
+                    }
                 }
             } catch (Exception e) {
 
@@ -47,6 +52,19 @@ public class MainThread extends Thread {
         System.out.println("thread ends");
     }
 
+    /*public void run() {
+        while(running) {
+            if(!surfaceHolder.getSurface().isValid()) continue;
+            Canvas canvas = surfaceHolder.lockCanvas();
+
+            this.gameView.draw(canvas);
+            this.gameView.update();
+            surfaceHolder.unlockCanvasAndPost(canvas);
+        }
+        System.out.println("end run");
+    }*/
+
+
     public void setRunning(boolean isRunning) {
 
         running = isRunning;
@@ -58,4 +76,7 @@ public class MainThread extends Thread {
         }
     }
 
+    public void setEndgame(boolean b) {
+        endgame = b;
+    }
 }
